@@ -529,8 +529,10 @@ footer a:hover {
     color: #e9c18c;
 }
 
+
 footer p:last-child {
     margin-bottom: 0;
+    
 }
 
 /* Give the navigation its own row on tablets and smaller laptops. */
