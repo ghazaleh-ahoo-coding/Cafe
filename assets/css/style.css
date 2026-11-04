@@ -326,6 +326,42 @@ figcaption {
     font-size: 1.4rem;
 }
 
+.services-list {
+    display: grid;
+    gap: 1rem;
+    /* Keep the cards beside the floated café image on wide screens. */
+    overflow: hidden;
+}
+
+.service-card {
+    padding: 1.25rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+}
+
+.service-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: 0.75rem;
+    background: var(--cream);
+    border-radius: 50%;
+    font-size: 1.4rem;
+}
+
+.service-title {
+    margin-top: 0;
+    color: var(--green);
+}
+
+.service-description {
+    margin-bottom: 0;
+}
+
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
