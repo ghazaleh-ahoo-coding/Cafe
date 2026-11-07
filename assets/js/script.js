@@ -55,3 +55,41 @@ services.forEach((service) => {
     card.append(icon, title, description);
     servicesList.append(card);
 });
+
+// Show a welcome popup once the page and its images have finished loading.
+window.addEventListener('load', () => {
+    const popup = document.createElement('dialog');
+    popup.classList.add('welcome-popup');
+    popup.setAttribute('aria-labelledby', 'welcome-popup-title');
+    popup.setAttribute('aria-describedby', 'welcome-popup-message');
+
+    const heading = document.createElement('h2');
+    heading.id = 'welcome-popup-title';
+    heading.textContent = 'Welcome to CaFe!';
+
+    const message = document.createElement('p');
+    message.id = 'welcome-popup-message';
+    message.textContent = 'Enjoy a little coffee, a little conversation, and a warm welcome in Herat.';
+
+    const note = document.createElement('p');
+    note.classList.add('welcome-popup-note');
+    note.textContent = 'This welcome message closes automatically after 30 seconds.';
+
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.textContent = 'Explore the café';
+    closeButton.addEventListener('click', () => popup.close());
+
+    popup.append(heading, message, note, closeButton);
+    document.body.append(popup);
+    popup.showModal();
+
+    // setTimeout uses milliseconds: 30,000 milliseconds = 30 seconds.
+    const closeTimer = setTimeout(() => popup.close(), 30000);
+
+    // The close button and the Escape key can also dismiss the popup early.
+    popup.addEventListener('close', () => {
+        clearTimeout(closeTimer);
+        popup.remove();
+    }, { once: true });
+}, { once: true });
