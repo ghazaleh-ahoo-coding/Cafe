@@ -56,40 +56,79 @@ services.forEach((service) => {
     servicesList.append(card);
 });
 
-// Show a welcome popup once the page and its images have finished loading.
-window.addEventListener('load', () => {
-    const popup = document.createElement('dialog');
-    popup.classList.add('welcome-popup');
-    popup.setAttribute('aria-labelledby', 'welcome-popup-title');
-    popup.setAttribute('aria-describedby', 'welcome-popup-message');
+// Lesson 07: toggle the mobile menu with a CSS class.
+const navBtn = document.querySelector(".nav-toggle");
+const nav = document.querySelector("#main-nav");
 
-    const heading = document.createElement('h2');
-    heading.id = 'welcome-popup-title';
-    heading.textContent = 'Welcome to CaFe!';
+navBtn.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("nav-open");
+    navBtn.setAttribute("aria-expanded", isOpen);
+});
 
-    const message = document.createElement('p');
-    message.id = 'welcome-popup-message';
-    message.textContent = 'Enjoy a little coffee, a little conversation, and a warm welcome in Herat.';
+// Close the menu when a link is clicked.
+const links = nav.querySelectorAll("a");
+links.forEach((link) => {
+    link.addEventListener("click", () => {
+        nav.classList.remove("nav-open");
+        navBtn.setAttribute("aria-expanded", "false");
+    });
+});
 
-    const note = document.createElement('p');
-    note.classList.add('welcome-popup-note');
-    note.textContent = 'This welcome message closes automatically after 30 seconds.';
+// Lesson 07: two reusable functions open and close the booking popup.
+const modal = document.querySelector("#modal");
+const openBtn = document.querySelector("#open-btn");
+const closeBtn = modal.querySelector(".close-btn");
 
-    const closeButton = document.createElement('button');
-    closeButton.type = 'button';
-    closeButton.textContent = 'Explore the café';
-    closeButton.addEventListener('click', () => popup.close());
+function openModal() {
+    modal.classList.add("is-open");
+    closeBtn.focus();
+}
 
-    popup.append(heading, message, note, closeButton);
-    document.body.append(popup);
-    popup.showModal();
+function closeModal() {
+    modal.classList.remove("is-open");
+    openBtn.focus();
+}
 
-    // setTimeout uses milliseconds: 30,000 milliseconds = 30 seconds.
-    const closeTimer = setTimeout(() => popup.close(), 30000);
+openBtn.addEventListener("click", openModal);
+closeBtn.addEventListener("click", closeModal);
 
-    // The close button and the Escape key can also dismiss the popup early.
-    popup.addEventListener('close', () => {
-        clearTimeout(closeTimer);
-        popup.remove();
-    }, { once: true });
-}, { once: true });
+// Only a click on the dark overlay closes the popup.
+modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+
+
+// form controls
+document.addEventListener("keydown", (event) => {
+    const shown = modal.classList.contains("is-open");
+    if (event.key === "Escape" && shown) {
+        closeModal();
+    }
+
+    // Let Tab move through the form, keeping focus inside the popup.
+    if (event.key === "Tab" && shown) {
+        const controls = modal.querySelectorAll("button, input, select, textarea");
+        const firstControl = controls[0];
+        const lastControl = controls[controls.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstControl) {
+            event.preventDefault();
+            lastControl.focus();
+        } else if (!event.shiftKey && document.activeElement === lastControl) {
+            event.preventDefault();
+            firstControl.focus();
+        }
+    }
+});
+
+// Keep this preview on the page. Validation can be added in the next lesson.
+const bookingForm = document.querySelector("#booking-form");
+const bookingStatus = document.querySelector("#booking-status");
+
+bookingForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    bookingStatus.textContent = "Preview only: your booking has not been sent.";
+});

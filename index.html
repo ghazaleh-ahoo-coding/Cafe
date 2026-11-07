@@ -32,11 +32,11 @@
       </a>
       <p>Coffee. Conversation. Connection.</p>
       <button
-        class="menu-toggle"
+        class="nav-toggle"
         type="button"
         aria-controls="main-nav"
         aria-expanded="false"
-        aria-label="Open navigation menu"
+        aria-label="Toggle navigation menu"
       >
         <span></span>
         <span></span>
@@ -83,6 +83,7 @@
         <p>
           <a href="#menu">Explore the sample menu</a
           ><a href="#visit">Plan your visit</a>
+          <button class="btn" id="open-btn" type="button">Book a table</button>
         </p>
       </section>
 
@@ -346,7 +347,47 @@
       </nav>
       <p><small>&copy; 2026 CaFe. All rights reserved.</small></p>
     </footer>
-    <script src="assets/js/navigation.js" defer></script>
+    <div class="modal-overlay" id="modal">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
+        <button class="close-btn" type="button" aria-label="Close booking popup">&times;</button>
+        <h2 id="modal-title">Book a table</h2>
+        <p id="modal-description">We look forward to welcoming you to CaFe in Herat.</p>
+        <form id="booking-form">
+          <p>
+            <label for="booking-name">Full name</label>
+            <input type="text" id="booking-name" name="name" autocomplete="name"  required/>
+          </p>
+          <p>
+            <label for="booking-phone">Phone number</label>
+            <input type="tel" id="booking-phone" name="phone" autocomplete="tel" required/>
+          </p>
+          <p>
+            <label for="booking-email">Email</label>
+            <input type="email" id="booking-email" name="email" autocomplete="email" />
+          </p>
+          <p>
+            <label for="booking-date">Date</label>
+            <input type="date" id="booking-date" name="date" />
+          </p>
+          <p>
+            <label for="booking-time">Time</label>
+            <input type="time" id="booking-time" name="time" />
+          </p>
+          <p>
+            <label for="booking-guests">Number of guests</label>
+            <input type="number" id="booking-guests" name="guests" />
+          </p>
+          <p class="booking-full-width">
+            <label for="booking-notes">Special requests</label>
+            <textarea id="booking-notes" name="notes" rows="3"></textarea>
+          </p>
+          <p id="booking-status" role="status">This form is a preview. Bookings are not sent yet.</p>
+          <button type="submit">Book a table</button>
+
+          <!-- <input type="submit" value="Book a table"> -->
+        </form>
+      </div>
+    </div>
 
     <!-- <script src="assets/js/main.js"></script> -->
      <script src="assets/js/script.js"></script>
