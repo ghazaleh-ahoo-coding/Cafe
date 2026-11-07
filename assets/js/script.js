@@ -124,11 +124,86 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-// Keep this preview on the page. Validation can be added in the next lesson.
+// Lesson 08: show a friendly error beside each booking field.
 const bookingForm = document.querySelector("#booking-form");
 const bookingStatus = document.querySelector("#booking-status");
+const bookingInputs = bookingForm.querySelectorAll("input");
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function showError(input, message) {
+    const error = document.querySelector(`#${input.id}-error`);
+    error.textContent = message;
+    input.classList.toggle("invalid", message !== "");
+    input.setAttribute("aria-invalid", message !== "");
+}
+
+function validateField(input) {
+    const value = input.value.trim();
+    let message = "";
+
+    if (value === "") {
+        message = "Please fill in this field.";
+    } else if (input.name === "name" && value.length < 2) {
+        message = "Please enter at least 2 characters.";
+    } else if (input.name === "phone" &&
+        (!/^\+?[\d\s()-]+$/.test(value) ||
+        value.replace(/\D/g, "").length < 7 ||
+        value.replace(/\D/g, "").length > 15)) {
+        message = "Enter a phone number with 7–15 digits.";
+    } else if (input.name === "email" && !emailPattern.test(value)) {
+        message = "Enter an email like name@mail.com.";
+    } else if (input.name === "date") {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const selectedDate = new Date(`${value}T00:00:00`);
+        if (Number.isNaN(selectedDate.getTime()) || selectedDate < today) {
+            message = "Choose today or a future date.";
+        }
+    } else if (input.name === "time") {
+        const date = document.querySelector("#booking-date").value;
+        if (date && new Date(`${date}T${value}`) <= new Date()) {
+            message = "Choose a time in the future.";
+        }
+    } else if (input.name === "guests" &&
+        (!Number.isInteger(Number(value)) || Number(value) < 1)) {
+        message = "Enter a whole number of guests, at least 1.";
+    }
+
+    showError(input, message);
+    return message === "";
+}
 
 bookingForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    bookingStatus.textContent = "Preview only: your booking has not been sent.";
+    let isValid = true;
+    let firstInvalid = null;
+
+    bookingInputs.forEach((input) => {
+        if (!validateField(input)) {
+            isValid = false;
+            if (!firstInvalid) firstInvalid = input;
+        }
+    });
+
+    bookingStatus.classList.toggle("success", isValid);
+    if (isValid) {
+        bookingStatus.textContent = "Thank you! Your details passed validation. This is a preview; no booking has been sent.";
+        bookingForm.reset();
+    } else {
+        bookingStatus.textContent = "Please correct the highlighted fields.";
+        firstInvalid.focus();
+    }
+});
+
+// Recheck fields with errors as the visitor corrects them.
+bookingForm.addEventListener("input", (event) => {
+    bookingStatus.classList.remove("success");
+    bookingStatus.textContent = "This form is a preview. Bookings are not sent yet.";
+    if (event.target.classList.contains("invalid")) {
+        validateField(event.target);
+    }
+    if (event.target.name === "date") {
+        const timeInput = document.querySelector("#booking-time");
+        if (timeInput.value) validateField(timeInput);
+    }
 });

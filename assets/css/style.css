@@ -848,3 +848,21 @@ footer p:last-child {
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+/* Lesson 08: field errors and validation feedback. */
+#booking-form .error {
+    display: block;
+    color: #b42318;
+    font-size: 0.85rem;
+}
+
+#booking-form input.invalid {
+    border-color: #b42318;
+}
+
+#booking-status.success {
+    background: #e7f6ec;
+    color: #146c2e;
+    padding: 0.75rem;
+    border-radius: 8px;
+}
