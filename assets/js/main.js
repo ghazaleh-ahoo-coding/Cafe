@@ -166,6 +166,8 @@ const greetArrow = name => `Hello, ${name}!`;
 
 console.log(greetArrow("Ali")); // Hello, Ali!
 
+// debugging
+console.log("This is the end of the main.js file." , name1); // ReferenceError: name1 is not defined;
 
 
 

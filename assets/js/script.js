@@ -80,6 +80,7 @@ const openBtn = document.querySelector("#open-btn");
 const closeBtn = modal.querySelector(".close-btn");
 
 function openModal() {
+    console.log("openModal called");
     modal.classList.add("is-open");
     closeBtn.focus();
 }
